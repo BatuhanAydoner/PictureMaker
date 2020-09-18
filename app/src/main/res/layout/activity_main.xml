@@ -14,12 +14,95 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="5dp"
-        android:layout_marginBottom="5dp"
         android:background="@drawable/drawing_view_border_background"
-        app:layout_constraintBottom_toTopOf="@+id/ibBrushSize"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/ibBrushSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageButton
+            android:id="@+id/ibColor1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="image_small"
+            android:onClick="colorPalette"
+            android:src="@drawable/normal_brush_size"
+            android:tint="#f9f7d9" />
+
+        <ImageButton
+            android:id="@+id/ibColor2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="image_small"
+            android:onClick="colorPalette"
+            android:src="@drawable/normal_brush_size"
+            android:tint="@android:color/black" />
+
+        <ImageButton
+            android:id="@+id/ibColor3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="image_small"
+            android:onClick="colorPalette"
+            android:src="@drawable/normal_brush_size"
+            android:tint="@android:color/holo_red_dark" />
+
+        <ImageButton
+            android:id="@+id/ibColor4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="image_small"
+            android:onClick="colorPalette"
+            android:src="@drawable/normal_brush_size"
+            android:tint="@android:color/holo_green_light" />
+
+        <ImageButton
+            android:id="@+id/ibColor5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="image_small"
+            android:onClick="colorPalette"
+            android:src="@drawable/normal_brush_size"
+            android:tint="@android:color/holo_blue_dark" />
+
+        <ImageButton
+            android:id="@+id/ibColor6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="image_small"
+            android:onClick="colorPalette"
+            android:src="@drawable/normal_brush_size"
+            android:tint="#ff9234" />
+
+        <ImageButton
+            android:id="@+id/ibColor7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="image_small"
+            android:onClick="colorPalette"
+            android:src="@drawable/normal_brush_size"
+            android:tint="#fddb3a" />
+
+        <ImageButton
+            android:id="@+id/ibColor8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="image_small"
+            android:onClick="colorPalette"
+            android:src="@drawable/normal_brush_size"
+            android:tint="#ffc1f3" />
+
+    </LinearLayout>
 
     <ImageButton
         android:id="@+id/ibBrushSize"

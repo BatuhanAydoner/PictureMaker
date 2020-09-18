@@ -41,7 +41,7 @@ class DrawingView(context: Context, attributeSet: AttributeSet) : View(context, 
         mCanvasPaint = Paint(Paint.DITHER_FLAG)
 
         mDrawPath = CustomPath(color, mBrushSize)
-        mBrushSize = NORMAL_BRUSH_SIZE
+        mBrushSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, NORMAL_BRUSH_SIZE, resources.displayMetrics)
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -96,9 +96,15 @@ class DrawingView(context: Context, attributeSet: AttributeSet) : View(context, 
         return true
     }
 
+    // Change brush size.
     fun setSizeForBrush(newSize: Float) {
         mBrushSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, newSize, resources.displayMetrics)
         mDrawPaint!!.strokeWidth = mBrushSize
+    }
+
+    // Change brush color.
+    fun setBrushColor(color: Int) {
+        this.color = color
     }
 
     internal inner class CustomPath(var color: Int, var mBrushThickness: Float): Path() {}
