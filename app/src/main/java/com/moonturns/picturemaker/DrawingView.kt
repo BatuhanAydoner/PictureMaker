@@ -4,11 +4,18 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.util.Log
+import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
 import kotlin.reflect.typeOf
 
 class DrawingView(context: Context, attributeSet: AttributeSet) : View(context, attributeSet) {
+
+    companion object {
+        val SMALL_BRUSH_SIZE = 10f
+        val NORMAL_BRUSH_SIZE = 20f
+        val LARGE_BRUSH_SIZE = 30f
+    }
 
     private var mDrawPath: CustomPath? = null
     private var mCanvasBitmap: Bitmap? = null
@@ -34,7 +41,7 @@ class DrawingView(context: Context, attributeSet: AttributeSet) : View(context, 
         mCanvasPaint = Paint(Paint.DITHER_FLAG)
 
         mDrawPath = CustomPath(color, mBrushSize)
-        mBrushSize = 20.toFloat()
+        mBrushSize = NORMAL_BRUSH_SIZE
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -87,6 +94,11 @@ class DrawingView(context: Context, attributeSet: AttributeSet) : View(context, 
         }
         invalidate()
         return true
+    }
+
+    fun setSizeForBrush(newSize: Float) {
+        mBrushSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, newSize, resources.displayMetrics)
+        mDrawPaint!!.strokeWidth = mBrushSize
     }
 
     internal inner class CustomPath(var color: Int, var mBrushThickness: Float): Path() {}

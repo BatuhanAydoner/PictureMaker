@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">PictureMaker</string>
+
+    <string name="image_small">Small Image</string>
+    <string name="image_normal">Normal Image</string>
+    <string name="image_large">Big Image</string>
 </resources>
