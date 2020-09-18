@@ -8,7 +8,9 @@
 
     <com.moonturns.picturemaker.DrawingView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        android:background="@drawable/drawing_view_border_background"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

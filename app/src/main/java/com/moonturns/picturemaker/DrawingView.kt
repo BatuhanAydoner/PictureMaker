@@ -15,19 +15,25 @@ class DrawingView(context: Context, attributeSet: AttributeSet) : View(context, 
     private var mDrawPaint: Paint? = null
     private var mCanvasPaint: Paint? = null
     private var mCanvas: Canvas? = null
-
     private var color = Color.BLACK
     private var mBrushSize = 0.toFloat()
 
+    private var mPaths = ArrayList<CustomPath>()
+
     init {
+        setUpDrawing()
+    }
+
+    private fun setUpDrawing() {
         mDrawPaint = Paint()
         mDrawPaint!!.color = color
         mDrawPaint!!.strokeCap = Paint.Cap.ROUND
         mDrawPaint!!.strokeJoin = Paint.Join.ROUND
         mDrawPaint!!.style = Paint.Style.STROKE
-        mDrawPath = CustomPath(color, mBrushSize)
 
         mCanvasPaint = Paint(Paint.DITHER_FLAG)
+
+        mDrawPath = CustomPath(color, mBrushSize)
         mBrushSize = 20.toFloat()
     }
 
@@ -39,15 +45,21 @@ class DrawingView(context: Context, attributeSet: AttributeSet) : View(context, 
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
+
         canvas!!.drawBitmap(mCanvasBitmap!!, 0f, 0f, mCanvasPaint!!)
-        if (!mDrawPath!!.isEmpty) {
-            mDrawPaint!!.color = mDrawPath!!.color
-            mDrawPaint!!.strokeWidth = mDrawPath!!.mBrushThickness
-            mDrawPaint!!.strokeCap = Paint.Cap.ROUND
-            mDrawPaint!!.strokeJoin = Paint.Join.ROUND
-            mDrawPaint!!.style = Paint.Style.STROKE
-            canvas!!.drawPath(mDrawPath!!, mDrawPaint!!)
+
+        for (path in mPaths) {
+            mDrawPaint!!.color = path.color
+            mDrawPaint!!.strokeWidth = path.mBrushThickness
+            canvas!!.drawPath(path, mDrawPaint!!)
         }
+
+        mDrawPaint!!.color = mDrawPath!!.color
+        mDrawPaint!!.strokeWidth = mDrawPath!!.mBrushThickness
+        mDrawPaint!!.strokeCap = Paint.Cap.ROUND
+        mDrawPaint!!.strokeJoin = Paint.Join.ROUND
+        mDrawPaint!!.style = Paint.Style.STROKE
+        canvas!!.drawPath(mDrawPath!!, mDrawPaint!!)
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
@@ -66,13 +78,13 @@ class DrawingView(context: Context, attributeSet: AttributeSet) : View(context, 
                 mDrawPath!!.lineTo(x, y)
             }
             MotionEvent.ACTION_UP -> {
+                mPaths.add(mDrawPath!!)
                 mDrawPath = CustomPath(color, mBrushSize)
             }
             else -> {
                 return false
             }
         }
-
         invalidate()
         return true
     }
