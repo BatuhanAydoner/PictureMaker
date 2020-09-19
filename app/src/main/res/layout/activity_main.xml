@@ -24,7 +24,7 @@
             android:id="@+id/imgBackground"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/eraser"/>
+            android:scaleType="fitXY"/>
 
         <com.moonturns.picturemaker.DrawingView
             android:id="@+id/drawingView"
@@ -119,17 +119,25 @@
             android:src="@drawable/normal_brush_size"
             android:tint="#ffc1f3" />
 
+        <ImageButton
+            android:id="@+id/ibEraser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/color_palette"
+            android:onClick="colorPalette"
+            android:src="@drawable/eraser"/>
+
     </LinearLayout>
 
     <ImageButton
-        android:id="@+id/ibEraser"
+        android:id="@+id/ibImage"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="56dp"
-        android:src="@drawable/eraser"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:layout_marginEnd="24dp"
+        android:src="@drawable/ic_action_image"
+        app:layout_constraintBottom_toBottomOf="@+id/ibBrushSize"
+        app:layout_constraintEnd_toStartOf="@+id/ibBrushSize"
+        app:layout_constraintTop_toTopOf="@+id/ibBrushSize" />
 
     <ImageButton
         android:id="@+id/ibBrushSize"

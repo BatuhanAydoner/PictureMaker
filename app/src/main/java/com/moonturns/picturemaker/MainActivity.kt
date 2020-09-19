@@ -1,6 +1,11 @@
 package com.moonturns.picturemaker
 
+import android.app.Activity
 import android.app.Dialog
+import android.content.Context
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -15,6 +20,7 @@ class MainActivity : AppCompatActivity() {
 
         ibBrushSizeClickEvent()
         ibEraserClickEvent()
+        ibImageClickEvent()
     }
 
     /* ibBrushSize at activity_main layout click event.
@@ -82,6 +88,26 @@ class MainActivity : AppCompatActivity() {
     private fun ibEraserClickEvent() {
         ibEraser.setOnClickListener {
             drawingView.setBrushColor("#ffffff")
+        }
+    }
+
+    // ibImage at activity_main click event.
+    // To add image to the UI.
+    private fun ibImageClickEvent() {
+        ibImage.setOnClickListener {
+            var intent = Intent()
+            intent.type = "image/*"
+            intent.action = Intent.ACTION_GET_CONTENT
+            startActivityForResult(Intent.createChooser(intent, "Select Picture"), 100)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
+            if (data != null) {
+                imgBackground.setImageURI(data.data)
+            }
         }
     }
 }
