@@ -1,19 +1,22 @@
 package com.moonturns.picturemaker
 
+import android.Manifest
 import android.app.Activity
 import android.app.Dialog
-import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Color
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.dialog_brush_size.*
 
 class MainActivity : AppCompatActivity() {
+
+    private val STORAGE_PERMISSON_CODE = 100
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -21,6 +24,30 @@ class MainActivity : AppCompatActivity() {
         ibBrushSizeClickEvent()
         ibEraserClickEvent()
         ibImageClickEvent()
+        ibBackClickEvent()
+    }
+
+    // READ AND WRITE EXTERNAL PERMISSION
+    private fun requestStoragePermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE) ||
+            ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE), STORAGE_PERMISSON_CODE)
+        }else {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE), STORAGE_PERMISSON_CODE)
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == STORAGE_PERMISSON_CODE && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            openGallery()
+        }else {
+            Toast.makeText(this, "Need permissions", Toast.LENGTH_SHORT).show()
+        }
     }
 
     /* ibBrushSize at activity_main layout click event.
@@ -95,10 +122,15 @@ class MainActivity : AppCompatActivity() {
     // To add image to the UI.
     private fun ibImageClickEvent() {
         ibImage.setOnClickListener {
-            var intent = Intent()
-            intent.type = "image/*"
-            intent.action = Intent.ACTION_GET_CONTENT
-            startActivityForResult(Intent.createChooser(intent, "Select Picture"), 100)
+            requestStoragePermission()
+        }
+    }
+
+    // ibImage at activity_main click event.
+    // Back to last draw.
+    private fun ibBackClickEvent() {
+        ibBack.setOnClickListener {
+            drawingView.setDrawLast()
         }
     }
 
@@ -109,5 +141,13 @@ class MainActivity : AppCompatActivity() {
                 imgBackground.setImageURI(data.data)
             }
         }
+    }
+
+    // Open phone's gallery to choose an image.
+    private fun openGallery() {
+        var intent = Intent()
+        intent.type = "image/*"
+        intent.action = Intent.ACTION_GET_CONTENT
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), 100)
     }
 }

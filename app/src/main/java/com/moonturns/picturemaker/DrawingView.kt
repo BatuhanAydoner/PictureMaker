@@ -107,4 +107,12 @@ class DrawingView(context: Context, attributeSet: AttributeSet) : View(context, 
         this.color = Color.parseColor(parseColor)
     }
 
+    // Delete the last item and draw again.
+    fun setDrawLast() {
+        if (mPaths.isNotEmpty()) {
+            mPaths.removeAt(mPaths.size - 1)
+            invalidate()
+        }
+    }
+
 }

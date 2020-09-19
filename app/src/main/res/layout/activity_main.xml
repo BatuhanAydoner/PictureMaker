@@ -44,7 +44,7 @@
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/ibBrushSize"
-        app:layout_constraintEnd_toStartOf="@+id/ibEraser"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <ImageButton
@@ -125,7 +125,7 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/color_palette"
             android:onClick="colorPalette"
-            android:src="@drawable/eraser"/>
+            android:src="@drawable/eraser" />
 
     </LinearLayout>
 
@@ -150,6 +150,16 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/ibBack"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="24dp"
+        android:src="@drawable/ic_action_back"
+        app:layout_constraintBottom_toBottomOf="@+id/ibBrushSize"
+        app:layout_constraintStart_toEndOf="@+id/ibBrushSize"
+        app:layout_constraintTop_toBottomOf="@+id/llColorPalette" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
