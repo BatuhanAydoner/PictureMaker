@@ -14,6 +14,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         ibBrushSizeClickEvent()
+        ibEraserClickEvent()
     }
 
     /* ibBrushSize at activity_main layout click event.
@@ -50,29 +51,37 @@ class MainActivity : AppCompatActivity() {
     fun colorPalette(view: View) {
         when (view.id) {
             R.id.ibColor1 -> {
-                drawingView.setBrushColor(Color.parseColor("#f9f7d9"))
+                drawingView.setBrushColor("#f9f7d9")
             }
             R.id.ibColor2 -> {
-                drawingView.setBrushColor(Color.parseColor("#000000"))
+                drawingView.setBrushColor("#000000")
             }
             R.id.ibColor3 -> {
-                drawingView.setBrushColor(Color.parseColor("#ffcc0000"))
+                drawingView.setBrushColor("#ffcc0000")
             }
             R.id.ibColor4 -> {
-                drawingView.setBrushColor(Color.parseColor("#ff99cc00"))
+                drawingView.setBrushColor("#ff99cc00")
             }
             R.id.ibColor5 -> {
-                drawingView.setBrushColor(Color.parseColor("#ff0099cc"))
+                drawingView.setBrushColor("#ff0099cc")
             }
             R.id.ibColor6 -> {
-                drawingView.setBrushColor(Color.parseColor("#ff9234"))
+                drawingView.setBrushColor("#ff9234")
             }
             R.id.ibColor7 -> {
-                drawingView.setBrushColor(Color.parseColor("#fddb3a"))
+                drawingView.setBrushColor("#fddb3a")
             }
             R.id.ibColor8 -> {
-                drawingView.setBrushColor(Color.parseColor("#ffc1f3"))
+                drawingView.setBrushColor("#ffc1f3")
             }
+        }
+    }
+
+    // ibEraser at activity_main click event.
+    // Clean drawing.
+    private fun ibEraserClickEvent() {
+        ibEraser.setOnClickListener {
+            drawingView.setBrushColor("#ffffff")
         }
     }
 }

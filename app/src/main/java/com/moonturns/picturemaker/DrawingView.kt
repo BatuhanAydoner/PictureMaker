@@ -7,6 +7,7 @@ import android.util.Log
 import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
+import java.lang.reflect.TypeVariable
 import kotlin.reflect.typeOf
 
 class DrawingView(context: Context, attributeSet: AttributeSet) : View(context, attributeSet) {
@@ -23,25 +24,26 @@ class DrawingView(context: Context, attributeSet: AttributeSet) : View(context, 
     private var mCanvasPaint: Paint? = null
     private var mCanvas: Canvas? = null
     private var color = Color.BLACK
-    private var mBrushSize = 0.toFloat()
+    private var mDefaultBrushSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, NORMAL_BRUSH_SIZE, resources.displayMetrics)
 
     private var mPaths = ArrayList<CustomPath>()
 
-    init {
-        setUpDrawing()
-    }
-
+    // Setup drawing variables.
     private fun setUpDrawing() {
         mDrawPaint = Paint()
-        mDrawPaint!!.color = color
-        mDrawPaint!!.strokeCap = Paint.Cap.ROUND
-        mDrawPaint!!.strokeJoin = Paint.Join.ROUND
-        mDrawPaint!!.style = Paint.Style.STROKE
-
+        mDrawPaint?.apply {
+            color = this@DrawingView.color
+            strokeWidth = mDefaultBrushSize
+            strokeCap = Paint.Cap.ROUND
+            strokeJoin = Paint.Join.ROUND
+            style = Paint.Style.STROKE
+        }
         mCanvasPaint = Paint(Paint.DITHER_FLAG)
+        mDrawPath = CustomPath(color, mDefaultBrushSize)
+    }
 
-        mDrawPath = CustomPath(color, mBrushSize)
-        mBrushSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, NORMAL_BRUSH_SIZE, resources.displayMetrics)
+    init {
+        setUpDrawing()
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -52,7 +54,6 @@ class DrawingView(context: Context, attributeSet: AttributeSet) : View(context, 
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-
         canvas!!.drawBitmap(mCanvasBitmap!!, 0f, 0f, mCanvasPaint!!)
 
         for (path in mPaths) {
@@ -63,22 +64,17 @@ class DrawingView(context: Context, attributeSet: AttributeSet) : View(context, 
 
         mDrawPaint!!.color = mDrawPath!!.color
         mDrawPaint!!.strokeWidth = mDrawPath!!.mBrushThickness
-        mDrawPaint!!.strokeCap = Paint.Cap.ROUND
-        mDrawPaint!!.strokeJoin = Paint.Join.ROUND
-        mDrawPaint!!.style = Paint.Style.STROKE
         canvas!!.drawPath(mDrawPath!!, mDrawPaint!!)
+
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-
         var x = event!!.x
         var y = event!!.y
-
         when (event!!.action) {
             MotionEvent.ACTION_DOWN -> {
                 mDrawPath!!.color = color
-                mDrawPath!!.mBrushThickness = mBrushSize
-
+                mDrawPath!!.mBrushThickness = mDefaultBrushSize
                 mDrawPath!!.moveTo(x, y)
             }
             MotionEvent.ACTION_MOVE -> {
@@ -86,27 +82,29 @@ class DrawingView(context: Context, attributeSet: AttributeSet) : View(context, 
             }
             MotionEvent.ACTION_UP -> {
                 mPaths.add(mDrawPath!!)
-                mDrawPath = CustomPath(color, mBrushSize)
+                mDrawPath = CustomPath(color, mDefaultBrushSize)
             }
-            else -> {
-                return false
-            }
+            else -> return false
         }
         invalidate()
         return true
     }
 
+
+    internal inner class CustomPath(var color: Int, var mBrushThickness: Float): Path() {
+
+    }
+
+
     // Change brush size.
     fun setSizeForBrush(newSize: Float) {
-        mBrushSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, newSize, resources.displayMetrics)
-        mDrawPaint!!.strokeWidth = mBrushSize
+        mDefaultBrushSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, newSize, resources.displayMetrics)
+        mDrawPaint!!.strokeWidth = mDefaultBrushSize
     }
 
     // Change brush color.
-    fun setBrushColor(color: Int) {
-        this.color = color
+    fun setBrushColor(parseColor: String) {
+        this.color = Color.parseColor(parseColor)
     }
-
-    internal inner class CustomPath(var color: Int, var mBrushThickness: Float): Path() {}
 
 }
