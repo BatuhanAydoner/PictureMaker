@@ -3,12 +3,9 @@ package com.moonturns.picturemaker
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
-import android.util.Log
 import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
-import java.lang.reflect.TypeVariable
-import kotlin.reflect.typeOf
 
 class DrawingView(context: Context, attributeSet: AttributeSet) : View(context, attributeSet) {
 
@@ -108,11 +105,10 @@ class DrawingView(context: Context, attributeSet: AttributeSet) : View(context, 
     }
 
     // Delete the last item and draw again.
-    fun setDrawLast() {
+    fun setUndoDraw() {
         if (mPaths.isNotEmpty()) {
             mPaths.removeAt(mPaths.size - 1)
             invalidate()
         }
     }
-
 }
