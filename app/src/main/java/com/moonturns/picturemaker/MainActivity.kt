@@ -3,12 +3,14 @@ package com.moonturns.picturemaker
 import android.Manifest
 import android.app.Activity
 import android.app.Dialog
+import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
+import android.media.MediaScannerConnection
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
@@ -212,6 +214,7 @@ class MainActivity : AppCompatActivity() {
 
     // Save image to device storage.
     private fun saveBitmap(bitmap: Bitmap) {
+        var file = File(externalCacheDir!!.absoluteFile.toString() + File.separator + "PictureMaker_" + System.currentTimeMillis() / 1000 + ".png")
         CoroutineScope(Dispatchers.Main).launch {
             withContext(Dispatchers.IO) {
                 if (bitmap != null) {
@@ -219,7 +222,6 @@ class MainActivity : AppCompatActivity() {
                         val bytes = ByteArrayOutputStream()
                         bitmap.compress(Bitmap.CompressFormat.PNG, 90, bytes)
 
-                        var file = File(externalCacheDir!!.absoluteFile.toString() + File.separator + "PictureMaker_" + System.currentTimeMillis() / 1000 + ".png")
                         var fos = FileOutputStream(file)
                         fos.write(bytes.toByteArray())
                         fos.close()
@@ -227,6 +229,14 @@ class MainActivity : AppCompatActivity() {
                         Log.e("myApp", e.toString())
                     }
                 }
+            }
+
+            MediaScannerConnection.scanFile(this@MainActivity, arrayOf(file.toString()), null) { path, uri ->
+                var sharedIntent = Intent()
+                sharedIntent.action = Intent.ACTION_SEND
+                sharedIntent.putExtra(Intent.EXTRA_STREAM, uri)
+                sharedIntent.type = "image/png"
+                startActivity(Intent.createChooser(sharedIntent, "Choose an app"))
             }
         }.start()
     }
