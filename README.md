@@ -17,7 +17,7 @@
 <tr>
     <td>Empty Drawing Screen</td>
     <td>Drawing</td>
-    <td>Selecting brush size</td>
+    <td>Selecting Brush Size</td>
     <td>Image And Drawing</td>
     <td>Sharing Drawing</td>
   </tr>
